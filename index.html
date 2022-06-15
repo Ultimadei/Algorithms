@@ -9,15 +9,19 @@
     <script src="./main.js"></script>
 </head>
 <body onload="setup();">
-    <div id="bubble-sort-container" class="container active">
-        
-    </div>
+    <table id="bubble-sort-container" class="container active">
+        <tr id="bubble-sort-input-row"></tr>
+    </table>
+    <button id="start-algorithm" onclick="executeBubbleSort();">Start</button>
 
-    <template id="digit-box-template">
-        <input type="text" class="digit-box" onfocus="this.select();" oninput="validateDigitBox(this);">
+    <template id="bubble-sort-row-template">
+        <tr class="bubble-sort-row"></tr>
     </template>
-    <template id="add-digit-box-button-template">
-        <button class="add-digit-box-button" onclick="insertDigitBox();" onfocus="insertDigitBox();">+</input>
+    <template id="number-box-template">
+        <input type="text" class="number-box" onfocus="this.select();" oninput="validateNumberBox(this);">
+    </template>
+    <template id="add-number-box-button-template">
+        <button class="add-number-box-button" onclick="insertNumberBox(this.parentElement);" onfocus="insertNumberBox(this.parentElement);">+</button>
     </template>
 </body>
 </html>
