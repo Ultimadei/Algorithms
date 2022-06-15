@@ -5,10 +5,21 @@
     text-align: center; 
 }
 
+.number-box-container {
+    display: inline-block;
+}
+
 .number-box::selection {
     color: inherit;
 }
 
 .inactive {
     display: none;
+}
+
+.hide {
+    position: absolute;
+    height: 0;
+    overflow: hidden;
+    white-space: pre;
 }

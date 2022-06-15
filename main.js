@@ -1,23 +1,29 @@
 
-function validateNumberBox(self) {
+function resizeInput(self) {
+    // Validate input
     self.value = self.value.replace(/[^0-9]/g, '');
+
+    let hide = self.parentNode.querySelector('.hide');
+
+    hide.textContent = self.value;
+    self.style.width = hide.offsetWidth + "px";
 }
 
 function insertNumberBox(container){
     let boxTemplate = document.getElementById("number-box-template");
     let buttonTemplate = document.getElementById("add-number-box-button-template");
 
-    let box = boxTemplate.content.cloneNode(true);
-    let button = buttonTemplate.content.cloneNode(true);
+    let boxFragment = boxTemplate.content.cloneNode(true);
+    let buttonFragment = buttonTemplate.content.cloneNode(true);
 
     let existingButton = container.querySelector(".add-number-box-button");
     if(existingButton) container.removeChild(existingButton);
 
-    container.appendChild(box);
-    container.appendChild(button);
+    container.appendChild(boxFragment);
+    container.appendChild(buttonFragment);
 
     // Nice ux
-    container.querySelector(".number-box:last-of-type").focus();
+    container.querySelector(".number-box-container:last-of-type .number-box").focus();
 }
 
 // Sorts up to maxPasses, then stops
@@ -39,10 +45,11 @@ function bubbleSort(inp, ascending, maxPasses){
             numSwaps++;
         }
 
-        if(numSwaps == 0) maxIndex = 0;
-        else maxIndex--;
+        if(numSwaps == 0) break;
 
+        // Only counts as a pass if at least one swap was performed
         numPasses++;
+        maxIndex--;
         totalSwaps += numSwaps;
     }
 
@@ -80,15 +87,26 @@ function executeBubbleSort(){
         let rowTemplate = document.getElementById("bubble-sort-row-template");
         let boxTemplate = document.getElementById("number-box-template");
 
-        let row = rowTemplate.content.cloneNode(true);
+        // firstChild refers to the tr which is a child of template (necessary if we want to
+        // append children to row)
+        let row = rowTemplate.content.cloneNode(true).firstChild;
 
         for(let i = 0; i < inp.length; i++){
-            let box = boxTemplate.content.cloneNode(true);
+            let boxContainer = boxTemplate.content.cloneNode(true).querySelector(".number-box-container");
+            let box = boxContainer.querySelector(".number-box");
             box.value = inp[i].toString();
 
-            row.appendChild(box);
+            row.appendChild(boxContainer);
         }
+
+        container.appendChild(row);
+        res = bubbleSort(inp, true, 1);
     }
+
+    // This has to be done after the elements have actually been added to the page
+    document.querySelectorAll(".number-box").forEach((box) => {
+        resizeInput(box);
+    });
 }
 
 function setup(){
